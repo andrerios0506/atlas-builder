@@ -15,7 +15,9 @@ class EditScreen
     public function register(): void
     {
         add_action('add_meta_boxes', [$this, 'addMetaBox']);
+        add_action('add_meta_boxes', [$this, 'addThemeMetaBox']);
         add_action('save_post_atlas_landing', [$this, 'saveMetaBox']);
+        add_action('save_post_atlas_landing', [$this, 'saveThemeMetaBox']);
     }
 
     public function addMetaBox(): void
@@ -28,6 +30,65 @@ class EditScreen
             'normal',
             'high'
         );
+    }
+
+    public function addThemeMetaBox(): void
+    {
+        add_meta_box(
+            'atlas_theme_selector_box',
+            'Tema da Landing Page',
+            [$this, 'renderThemeSelector'],
+            'atlas_landing',
+            'side',
+            'default'
+        );
+    }
+
+    public function renderThemeSelector(\WP_Post $post): void
+    {
+        $selectedThemeId = (int) get_post_meta($post->ID, '_atlas_theme_id', true);
+
+        $themes = get_posts([
+            'post_type'      => 'atlas_theme',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        ]);
+
+        wp_nonce_field('atlas_save_theme_selector', 'atlas_theme_selector_nonce');
+        ?>
+        <p>
+            <select name="atlas_theme_id" style="width:100%;">
+                <option value="0">— Nenhum (estilo padrão) —</option>
+                <?php foreach ($themes as $theme): ?>
+                    <option
+                        value="<?php echo esc_attr($theme->ID); ?>"
+                        <?php selected($selectedThemeId, $theme->ID); ?>
+                    >
+                        <?php echo esc_html($theme->post_title); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </p>
+        <?php if (empty($themes)): ?>
+            <p><em>Nenhum tema criado ainda. Vá em Atlas Builder → Temas.</em></p>
+        <?php endif; ?>
+        <?php
+    }
+
+    public function saveThemeMetaBox(int $postId): void
+    {
+        if (!isset($_POST['atlas_theme_selector_nonce'])) {
+            return;
+        }
+
+        if (!wp_verify_nonce($_POST['atlas_theme_selector_nonce'], 'atlas_save_theme_selector')) {
+            return;
+        }
+
+        $themeId = isset($_POST['atlas_theme_id']) ? (int) $_POST['atlas_theme_id'] : 0;
+
+        update_post_meta($postId, '_atlas_theme_id', $themeId);
     }
 
     public function render(\WP_Post $post): void
