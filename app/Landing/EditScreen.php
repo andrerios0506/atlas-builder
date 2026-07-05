@@ -53,6 +53,7 @@ class EditScreen
                         <strong>
                             <?php echo esc_html($type ? $type->label() : ($sectionKey ?? 'Seção desconhecida')); ?>
                         </strong>
+
                         <button
                             type="submit"
                             name="atlas_remove_section"
@@ -62,6 +63,28 @@ class EditScreen
                             onclick="return confirm('Remover esta seção?');"
                         >
                             Remover
+                        </button>
+
+                        <button
+                            type="submit"
+                            name="atlas_move_down"
+                            value="<?php echo esc_attr($index); ?>"
+                            class="button"
+                            style="float:right; margin-right:6px;"
+                            <?php echo ($index === count($sections) - 1) ? 'disabled' : ''; ?>
+                        >
+                            Descer
+                        </button>
+
+                        <button
+                            type="submit"
+                            name="atlas_move_up"
+                            value="<?php echo esc_attr($index); ?>"
+                            class="button"
+                            style="float:right; margin-right:6px;"
+                            <?php echo ($index === 0) ? 'disabled' : ''; ?>
+                        >
+                            Subir
                         </button>
                     </p>
 
@@ -161,6 +184,16 @@ class EditScreen
             $sections = array_values($sections);
         }
 
+        if (isset($_POST['atlas_move_up'])) {
+            $moveIndex = (int) $_POST['atlas_move_up'];
+            $sections = $this->swap($sections, $moveIndex, $moveIndex - 1);
+        }
+
+        if (isset($_POST['atlas_move_down'])) {
+            $moveIndex = (int) $_POST['atlas_move_down'];
+            $sections = $this->swap($sections, $moveIndex, $moveIndex + 1);
+        }
+
         if (isset($_POST['atlas_add_section'])) {
             $key = sanitize_text_field($_POST['atlas_add_section']);
             $sectionType = $this->sections->get($key);
@@ -178,5 +211,18 @@ class EditScreen
         $current['sections'] = $sections;
 
         $document->save($postId, $current);
+    }
+
+    private function swap(array $sections, int $a, int $b): array
+    {
+        if (!isset($sections[$a]) || !isset($sections[$b])) {
+            return $sections;
+        }
+
+        $temp = $sections[$a];
+        $sections[$a] = $sections[$b];
+        $sections[$b] = $temp;
+
+        return array_values($sections);
     }
 }
