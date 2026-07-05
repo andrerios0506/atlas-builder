@@ -28,10 +28,10 @@ class Document
     public function save(int $postId, array $document): void
     {
         update_post_meta(
-            $postId,
-            self::META_KEY,
-            wp_json_encode($document)
-        );
+    $postId,
+    self::META_KEY,
+    wp_json_encode($document, JSON_UNESCAPED_UNICODE)
+);
     }
 
     private function defaultDocument(): array

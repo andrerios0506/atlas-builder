@@ -23,7 +23,7 @@ class Application
 
         (new PostType())->register();
 
-        (new EditScreen())->register();
+        (new EditScreen($this->sections))->register();
     }
 
     public function sections(): Registry

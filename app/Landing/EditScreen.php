@@ -4,8 +4,14 @@ namespace AtlasBuilder\Landing;
 
 defined('ABSPATH') || exit;
 
+use AtlasBuilder\Sections\Registry;
+
 class EditScreen
 {
+    public function __construct(private Registry $sections)
+    {
+    }
+
     public function register(): void
     {
         add_action('add_meta_boxes', [$this, 'addMetaBox']);
@@ -31,17 +37,40 @@ class EditScreen
 
         wp_nonce_field('atlas_save_document', 'atlas_document_nonce');
 
-        $json = wp_json_encode($data, JSON_PRETTY_PRINT);
+        $sections = $data['sections'] ?? [];
         ?>
-        <p>
-            <strong>Documento atual (JSON):</strong><br>
-            Este é um teste de leitura/escrita. O editor visual substituirá este campo em breve.
-        </p>
-        <textarea
-            name="atlas_document_json"
-            rows="15"
-            style="width: 100%; font-family: monospace;"
-        ><?php echo esc_textarea($json); ?></textarea>
+        <p><strong>Seções desta Landing Page</strong></p>
+
+        <?php if (empty($sections)): ?>
+            <p><em>Nenhuma seção adicionada ainda.</em></p>
+        <?php else: ?>
+            <ol>
+                <?php foreach ($sections as $section): ?>
+                    <li>
+                        <strong><?php echo esc_html($section['type'] ?? '???'); ?></strong>
+                        —
+                        <?php echo esc_html($section['data']['title'] ?? '(sem título)'); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        <?php endif; ?>
+
+        <hr>
+
+        <p><strong>Adicionar nova seção:</strong></p>
+
+        <?php foreach ($this->sections->all() as $type): ?>
+            <button
+                type="submit"
+                name="atlas_add_section"
+                value="<?php echo esc_attr($type->key()); ?>"
+                class="button"
+            >
+                + <?php echo esc_html($type->label()); ?>
+            </button>
+        <?php endforeach; ?>
+
+        <input type="hidden" name="atlas_sections_json" value="<?php echo esc_attr(wp_json_encode($sections, JSON_UNESCAPED_UNICODE)); ?>">
         <?php
     }
 
@@ -55,17 +84,32 @@ class EditScreen
             return;
         }
 
-        if (!isset($_POST['atlas_document_json'])) {
-            return;
+        $sections = [];
+
+        if (isset($_POST['atlas_sections_json'])) {
+            $decoded = json_decode(wp_unslash($_POST['atlas_sections_json']), true);
+
+            if (is_array($decoded)) {
+                $sections = $decoded;
+            }
         }
 
-        $raw = wp_unslash($_POST['atlas_document_json']);
-        $decoded = json_decode($raw, true);
+        if (isset($_POST['atlas_add_section'])) {
+            $key = sanitize_text_field($_POST['atlas_add_section']);
+            $type = $this->sections->get($key);
 
-        if (!is_array($decoded)) {
-            return;
+            if ($type !== null) {
+                $sections[] = [
+                    'type' => $type->key(),
+                    'data' => $type->defaults(),
+                ];
+            }
         }
 
-        (new Document())->save($postId, $decoded);
+        $document = new Document();
+        $current = $document->get($postId);
+        $current['sections'] = $sections;
+
+        $document->save($postId, $current);
     }
 }
