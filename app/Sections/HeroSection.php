@@ -51,4 +51,20 @@ class HeroSection implements SectionType
             'button_url'  => '#',
         ];
     }
+
+public function render(array $data): string
+    {
+        $title = esc_html($data['title'] ?? '');
+        $subtitle = esc_html($data['subtitle'] ?? '');
+        $buttonText = esc_html($data['button_text'] ?? '');
+        $buttonUrl = esc_url($data['button_url'] ?? '#');
+
+        $html = '<section class="atlas-section atlas-hero">';
+        $html .= '<h1>' . $title . '</h1>';
+        $html .= '<p>' . $subtitle . '</p>';
+        $html .= '<a class="atlas-button" href="' . $buttonUrl . '">' . $buttonText . '</a>';
+        $html .= '</section>';
+
+        return $html;
+    }
 }

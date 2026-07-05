@@ -13,4 +13,6 @@ interface SectionType
     public function fields(): array;
 
     public function defaults(): array;
+
+    public function render(array $data): string;
 }

@@ -45,4 +45,23 @@ class TestimonialSection implements SectionType
             'author_role' => '',
         ];
     }
+
+    public function render(array $data): string
+    {
+        $quote = esc_html($data['quote'] ?? '');
+        $authorName = esc_html($data['author_name'] ?? '');
+        $authorRole = esc_html($data['author_role'] ?? '');
+
+        $roleHtml = '';
+        if ($authorRole !== '') {
+            $roleHtml = ' <span class="atlas-author-role">— ' . $authorRole . '</span>';
+        }
+
+        $html = '<section class="atlas-section atlas-testimonial">';
+        $html .= '<blockquote>"' . $quote . '"</blockquote>';
+        $html .= '<p class="atlas-author">' . $authorName . $roleHtml . '</p>';
+        $html .= '</section>';
+
+        return $html;
+    }
 }

@@ -45,4 +45,26 @@ class ImageTextSection implements SectionType
             'body'      => 'Descrição ao lado da imagem.',
         ];
     }
+
+    public function render(array $data): string
+    {
+        $imageUrl = esc_url($data['image_url'] ?? '');
+        $heading = esc_html($data['heading'] ?? '');
+        $body = wpautop(esc_html($data['body'] ?? ''));
+
+        $imageHtml = '';
+        if ($imageUrl !== '') {
+            $imageHtml = '<img src="' . $imageUrl . '" alt="' . $heading . '">';
+        }
+
+        $html = '<section class="atlas-section atlas-image-text">';
+        $html .= '<div class="atlas-image-text-image">' . $imageHtml . '</div>';
+        $html .= '<div class="atlas-image-text-content">';
+        $html .= '<h2>' . $heading . '</h2>';
+        $html .= $body;
+        $html .= '</div>';
+        $html .= '</section>';
+
+        return $html;
+    }
 }

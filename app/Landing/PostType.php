@@ -23,11 +23,19 @@ class PostType
                 'edit_item'     => 'Editar Landing Page',
             ],
 
-            'public' => false,
+            'public' => true,
+
+            'publicly_queryable' => true,
 
             'show_ui' => true,
 
             'show_in_menu' => 'atlas-builder',
+
+            'show_in_nav_menus' => false,
+
+            'has_archive' => false,
+
+            'rewrite' => ['slug' => 'landing'],
 
             'supports' => [
                 'title'

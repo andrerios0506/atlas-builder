@@ -12,6 +12,8 @@ use AtlasBuilder\Sections\HeroSection;
 use AtlasBuilder\Sections\TextSection;
 use AtlasBuilder\Sections\ImageTextSection;
 use AtlasBuilder\Sections\TestimonialSection;
+use AtlasBuilder\Renderer\Renderer;
+use AtlasBuilder\Renderer\FrontendController;
 
 class Application
 {
@@ -30,6 +32,9 @@ class Application
         (new PostType())->register();
 
         (new EditScreen($this->sections))->register();
+
+        $renderer = new Renderer($this->sections);
+        (new FrontendController($renderer))->register();
     }
 
     public function sections(): Registry

@@ -39,4 +39,21 @@ class TextSection implements SectionType
             'body'    => 'Escreva aqui o conteúdo desta seção.',
         ];
     }
+
+    public function render(array $data): string
+    {
+        $heading = esc_html($data['heading'] ?? '');
+        $body = wpautop(esc_html($data['body'] ?? ''));
+
+        $html = '<section class="atlas-section atlas-text">';
+
+        if ($heading !== '') {
+            $html .= '<h2>' . $heading . '</h2>';
+        }
+
+        $html .= $body;
+        $html .= '</section>';
+
+        return $html;
+    }
 }
