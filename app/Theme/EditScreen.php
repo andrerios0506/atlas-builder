@@ -46,6 +46,18 @@ class EditScreen
                             name="<?php echo esc_attr($inputName); ?>"
                             value="<?php echo esc_attr($fieldValue); ?>"
                         >
+                    <?php elseif ($field['type'] === 'font_select'): ?>
+                        <select name="<?php echo esc_attr($inputName); ?>" style="width:100%; color:#222; background:#fff;">
+                            <?php foreach ($theme->availableFonts() as $fontName => $fontCss): ?>
+                                <option
+                                    value="<?php echo esc_attr($fontName); ?>"
+                                    style="color:#222; background:#fff;"
+                                    <?php selected($fieldValue, $fontName); ?>
+                                >
+                                    <?php echo esc_html($fontName); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     <?php else: ?>
                         <input
                             type="text"

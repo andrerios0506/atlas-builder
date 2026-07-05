@@ -58,11 +58,12 @@ class EditScreen
         wp_nonce_field('atlas_save_theme_selector', 'atlas_theme_selector_nonce');
         ?>
         <p>
-            <select name="atlas_theme_id" style="width:100%;">
-                <option value="0">— Nenhum (estilo padrão) —</option>
+            <select name="atlas_theme_id" style="width:100%; color:#222 !important; background:#fff !important; color-scheme: light;">
+                <option value="0" style="color:#222 !important; background:#fff !important;">— Nenhum (estilo padrão) —</option>
                 <?php foreach ($themes as $theme): ?>
                     <option
                         value="<?php echo esc_attr($theme->ID); ?>"
+                        style="color:#222 !important; background:#fff !important;"
                         <?php selected($selectedThemeId, $theme->ID); ?>
                     >
                         <?php echo esc_html($theme->post_title); ?>

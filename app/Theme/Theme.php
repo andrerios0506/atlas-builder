@@ -31,7 +31,7 @@ class Theme
             'text_color'       => '#222222',
             'background_color' => '#ffffff',
             'muted_color'      => '#666666',
-            'font_family'      => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            'font_family'      => 'Poppins',
         ];
     }
 
@@ -42,7 +42,19 @@ class Theme
             ['name' => 'text_color', 'label' => 'Cor do Texto', 'type' => 'color'],
             ['name' => 'background_color', 'label' => 'Cor de Fundo', 'type' => 'color'],
             ['name' => 'muted_color', 'label' => 'Cor de Texto Secundário (subtítulos, legendas)', 'type' => 'color'],
-            ['name' => 'font_family', 'label' => 'Fonte (CSS font-family)', 'type' => 'text'],
+            ['name' => 'font_family', 'label' => 'Fonte', 'type' => 'font_select'],
+        ];
+    }
+
+    public function availableFonts(): array
+    {
+        return [
+            'Poppins'          => "'Poppins', sans-serif",
+            'Montserrat'       => "'Montserrat', sans-serif",
+            'Inter'            => "'Inter', sans-serif",
+            'Playfair Display' => "'Playfair Display', serif",
+            'Lato'             => "'Lato', sans-serif",
+            'Merriweather'     => "'Merriweather', serif",
         ];
     }
 }
