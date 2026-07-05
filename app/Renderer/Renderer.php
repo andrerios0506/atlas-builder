@@ -70,6 +70,9 @@ class Renderer
         $css .= '.atlas-testimonial blockquote { font-size: 1.3em; margin: 0 0 15px; }';
         $css .= '.atlas-author { font-style: normal; font-weight: bold; }';
         $css .= '.atlas-author-role { font-weight: normal; color: #666; }';
+        $css .= '.atlas-lead-capture { text-align: center; }';
+        $css .= '.atlas-lead-form { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 20px auto 0; }';
+        $css .= '.atlas-input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }';
 
         // Responsividade — telas médias (tablets)
         $css .= '@media (max-width: 768px) {';

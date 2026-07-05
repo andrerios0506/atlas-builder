@@ -12,6 +12,7 @@ use AtlasBuilder\Sections\HeroSection;
 use AtlasBuilder\Sections\TextSection;
 use AtlasBuilder\Sections\ImageTextSection;
 use AtlasBuilder\Sections\TestimonialSection;
+use AtlasBuilder\Sections\LeadCaptureSection;
 use AtlasBuilder\Renderer\Renderer;
 use AtlasBuilder\Renderer\FrontendController;
 
@@ -26,6 +27,7 @@ class Application
         $this->sections->register(new TextSection());
         $this->sections->register(new ImageTextSection());
         $this->sections->register(new TestimonialSection());
+        $this->sections->register(new LeadCaptureSection());
 
         (new Menu())->register();
 
