@@ -16,6 +16,7 @@ use AtlasBuilder\Sections\LeadCaptureSection;
 use AtlasBuilder\Sections\FaqSection;
 use AtlasBuilder\Renderer\Renderer;
 use AtlasBuilder\Renderer\FrontendController;
+use AtlasBuilder\Theme\PostType as ThemePostType;
 
 class Application
 {
@@ -34,6 +35,8 @@ class Application
         (new Menu())->register();
 
         (new PostType())->register();
+
+        (new ThemePostType())->register();
 
         (new EditScreen($this->sections))->register();
 
