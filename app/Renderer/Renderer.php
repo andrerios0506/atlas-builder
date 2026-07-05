@@ -73,6 +73,9 @@ class Renderer
         $css .= '.atlas-lead-capture { text-align: center; }';
         $css .= '.atlas-lead-form { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 20px auto 0; }';
         $css .= '.atlas-input { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }';
+        $css .= '.atlas-faq-item { border-bottom: 1px solid #e0e0e0; padding: 16px 0; }';
+        $css .= '.atlas-faq-question { font-weight: bold; margin: 0 0 8px; }';
+        $css .= '.atlas-faq-answer { margin: 0; color: #444; }';
 
         // Responsividade — telas médias (tablets)
         $css .= '@media (max-width: 768px) {';
