@@ -9,6 +9,9 @@ use AtlasBuilder\Landing\PostType;
 use AtlasBuilder\Landing\EditScreen;
 use AtlasBuilder\Sections\Registry;
 use AtlasBuilder\Sections\HeroSection;
+use AtlasBuilder\Sections\TextSection;
+use AtlasBuilder\Sections\ImageTextSection;
+use AtlasBuilder\Sections\TestimonialSection;
 
 class Application
 {
@@ -18,6 +21,9 @@ class Application
     {
         $this->sections = new Registry();
         $this->sections->register(new HeroSection());
+        $this->sections->register(new TextSection());
+        $this->sections->register(new ImageTextSection());
+        $this->sections->register(new TestimonialSection());
 
         (new Menu())->register();
 
